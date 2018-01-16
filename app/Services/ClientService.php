@@ -11,14 +11,14 @@ class ClientService
     $headers = array(
       'Accept'=>'application/json',
       'Content-Type'=>'application/json',
-      'Authorization'=>'Bearer 838951d5370a48169574b471c408ebff',// Bisa pakai token masing-masing//
+      'Authorization'=>'Bearer 82887f86e5a44b8bbf0b23ce4b383e27',// Bisa pakai token masing-masing//
     );
     $query = http_build_query(
       array(
       "v" => 20170712,
       "query" => $param,
       "lang" => "en",
-      "sessionId" => "c4485a6c-763d-4e0b-bde5-17dc3247b96a",
+      "sessionId" => "5b050ebb-812b-4398-ac0d-fc4d35b657c4",
       "timezone" => "Asia/Jakarta",
     )
     );
