@@ -57,7 +57,7 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store($data)
     {
         //
     }
@@ -70,6 +70,8 @@ class UserController extends Controller
      */
     public function show($id)
     {
+        $key = array_keys($id);
+        $id = $id [$key[0]];
         $user = User::find($id);
         $user = [
             "kategori" => "user",
@@ -91,7 +93,7 @@ class UserController extends Controller
                     "website" => $user->website,
                     "company" => $user->company,
                 ];
-        
+
                 return $user;
     }
 

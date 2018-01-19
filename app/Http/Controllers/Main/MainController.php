@@ -8,23 +8,40 @@ use App\Services\ClientService;
 
 class MainController extends Controller
 {
-    public function index(ClientService $client,$command)
+    public function index(ClientService $client,$command=null)
     {
-      $response = $client->client($command);
+      if (!$command) {
+        return "hello, what can i do for you?";
+      }else {
+        $response = $client->client($command);
+        $x = preg_match_all('/\./',$response->action);
+        if ($response->action=="input.unknown") {
+          return "Maaf kata yang dimasukan salah";
+        }elseif ($x==2) {
+          return $response->fulfillment->speech;
+        }elseif ($x==1) {
+          // set controler dan method
+          [$controller, $method] = explode('.',$response->action);
+          $controller = $this->setController($controller);
+          $param = $response->parameters;
+          $a = [];
 
-      // set controler dan method
-      [$controller, $method] = explode('.',$response->action);
-      $param = $response->parameters;
-      foreach ($param as $key => $value) {
-        $param = [
-          "param"=>$response->parameters->$key,
-        ];
-        $param = $param['param'];
+          if ($response->actionIncomplete==true) {
+            return $response->fulfillment->speech;
+          }
+
+          foreach ($param as $key => $value) {
+            $a[$key] = $value;
+          }
+          // dd($a);
+          $response = $controller->$method($a);
+          return $response;
+
+          // set controller dan method
+        }
+        return "Maaf kata yang dimasukan salah";
       }
-      $controller = $this->setController($controller);
-      $response = $controller->$method($param);
-      return $response;
-      // set controller dan method
+
     }
 
     public function setController($param)
